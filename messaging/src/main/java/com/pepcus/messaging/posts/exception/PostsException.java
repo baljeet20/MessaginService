@@ -1,4 +1,4 @@
-package com.pepcus.messaging.post.exception;
+package com.pepcus.messaging.posts.exception;
 
 /**
  * Created by muchhalb on 31/10/17.
