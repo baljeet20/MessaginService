@@ -1,7 +1,29 @@
 package com.pepcus.messaging.posts.repository;
 
-/**
- * Created by muchhalb on 31/10/17.
- */
+import com.pepcus.messaging.posts.model.Posts;
+
+import java.util.List;
+
+
 public class PostsRepository {
+
+    public Posts findOne(String id) {
+        return null;
+    }
+
+    public Posts save(Posts posts) {
+        return null;
+    }
+
+    public Posts delete(String id) {
+        return null;
+    }
+
+    public Posts update(String id) {
+        return null;
+    }
+
+    public List<Posts> getAllUserPosts(String id) {
+        return null;
+    }
 }
