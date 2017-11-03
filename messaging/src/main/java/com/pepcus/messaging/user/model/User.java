@@ -3,21 +3,31 @@ package com.pepcus.messaging.user.model;
 
 import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "USERS")
 public class User {
 
-    @Id
-    private String id;
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name="ID")
+    private long id;
 
+    @Column(name="firebaseAppId")
     private String firebaseAppId;
+
+    @Column(name="mobileNo")
     private String mobileNo;
+    @Column(name="username")
     private String username;
+    @Column(name="password")
     private String password;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

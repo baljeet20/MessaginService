@@ -1,18 +1,46 @@
 package com.pepcus.messaging.user.repository;
 
+
 import com.pepcus.messaging.user.model.User;
-import org.springframework.data.repository.Repository;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
-public interface UserManagementRespository extends Repository<User, String> {
+@Repository
+public class UserManagementRespository implements IUserManagementRespository {
 
-    void delete(User deleted);
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    List<User> findAll();
+    @Override
+    public void delete(long id) {
+        entityManager.remove(findOne(id));
+    }
 
-    User findOne(String id);
+    @Override
+    public List<User> findAll() {
+        String hql = "FROM Users order by Id\n";
+        return (List<User>) entityManager.createQuery(hql).getResultList();
+    }
 
-    User save(User saved);
+    @Override
+    public User findOne(long id) {
+        return entityManager.find(User.class,id);
+    }
+
+    @Override
+    public void save(User user) {
+         entityManager.persist(user);
+    }
+
+    @Override
+    public void update(User user) {
+        User existingUser=findOne(user.getId());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setFirebaseAppId(user.getFirebaseAppId());
+        entityManager.flush();
+
+    }
 }

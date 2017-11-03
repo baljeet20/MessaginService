@@ -1,11 +1,17 @@
 package com.pepcus.messaging.posts.repository;
 
 import com.pepcus.messaging.posts.model.Posts;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
+public class PostsRepository implements IPostsRepository{
 
-public class PostsRepository {
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public Posts findOne(String id) {
         return null;
