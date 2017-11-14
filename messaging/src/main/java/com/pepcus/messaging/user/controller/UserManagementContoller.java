@@ -4,7 +4,11 @@ import com.pepcus.messaging.user.exceptions.UserNotFoundException;
 import com.pepcus.messaging.user.model.User;
 import com.pepcus.messaging.user.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,30 +21,44 @@ public class UserManagementContoller {
     @Autowired
     UserManagementService userManagementService;
 
+    @RequestMapping(value = "/health",method = RequestMethod.GET)
+    User health(){
+         return new User();
+    }
+
     @RequestMapping(value = "/users",method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    User create(@RequestBody @Valid User user) {
-        return userManagementService.createUser(user);
+    ResponseEntity<User> create(@RequestBody User user) {
+        System.out.println("Hi");
+        User createdUser = userManagementService.createUser(user);
+
+        return new ResponseEntity<User>(createdUser, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-    User delete(@PathVariable("id") String id) {
-        return userManagementService.delete(id);
+    String delete(@PathVariable("id") long id) {
+        userManagementService.delete(id);
+        return "Success";
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    List<User> findAll() {
+    @RequestMapping(value = "/users",method = RequestMethod.GET )
+    Iterable<User> findAll() {
         return userManagementService.findAll();
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-    User findById(@PathVariable("id") String id) {
-        return userManagementService.findById(id);
+    ResponseEntity<?> findById(@PathVariable("id") long id) {
+        User user= userManagementService.findById(id);
+        return  new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.PUT)
-    User update(@RequestBody @Valid User user) {
-        return userManagementService.update(user);
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT )
+    String update(@RequestBody @Valid User user,@PathVariable("id") long id) {
+        User existingUser= userManagementService.findById(id);
+        existingUser.setFirebaseAppId(user.getFirebaseAppId());
+        existingUser.setMobileNo(user.getMobileNo());
+
+         userManagementService.update(existingUser);
+         return "Success";
     }
 
     @ExceptionHandler

@@ -1,27 +1,38 @@
 package com.pepcus.messaging.user.model;
 
-
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "USERS")
-public class User {
+@Table(name="USERS")
+public class User implements Serializable{
+    private static final long serialVersionUID = 1L;
 
+
+    @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="ID")
     private long id;
 
-    @Column(name="firebaseAppId")
     private String firebaseAppId;
 
-    @Column(name="mobileNo")
     private String mobileNo;
-    @Column(name="username")
     private String username;
-    @Column(name="password")
     private String password;
+
+    public User(String firebaseAppId, String mobileNo, String username, String password) {
+        this.firebaseAppId = firebaseAppId;
+        this.mobileNo = mobileNo;
+        this.username = username;
+        this.password = password;
+    }
+
+    public User() {
+
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public long getId() {
         return id;
@@ -31,16 +42,7 @@ public class User {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getFirebaseAppId() {
-
         return firebaseAppId;
     }
 
@@ -62,5 +64,24 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firebaseAppId='" + firebaseAppId + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

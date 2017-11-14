@@ -13,23 +13,24 @@ public class UserManagementService {
     @Autowired
     IUserManagementRespository IUserManagementRespository;
 
-    public void createUser(User user) {
-         IUserManagementRespository.save(user);
+    public User createUser(User user) {
+        User user1= IUserManagementRespository.save(user);
+        return IUserManagementRespository.findById(user1.getId());
     }
 
     public User delete(long id) {
-        return IUserManagementRespository.findOne(id);
+        return IUserManagementRespository.findById(id);
     }
 
-    public List<User> findAll() {
+    public Iterable<User> findAll() {
         return IUserManagementRespository.findAll();
     }
 
     public User findById(long id) {
-        return IUserManagementRespository.findOne(id);
+        return IUserManagementRespository.findById(id);
     }
 
     public void update(User user) {
-         IUserManagementRespository.update(user);
+         IUserManagementRespository.save(user);
     }
 }
